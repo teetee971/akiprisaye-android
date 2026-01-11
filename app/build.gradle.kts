@@ -41,9 +41,14 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            // Use signing config only if keystore environment variables are available
+            // Use signing config only if all keystore environment variables are available
             val keystorePath = System.getenv("ANDROID_KEYSTORE_PATH")
-            if (keystorePath != null && file(keystorePath).exists()) {
+            val keystorePassword = System.getenv("ANDROID_KEYSTORE_PASSWORD")
+            val keyAlias = System.getenv("ANDROID_KEY_ALIAS")
+            val keyPassword = System.getenv("ANDROID_KEY_PASSWORD")
+            
+            if (keystorePath != null && keystorePassword != null && 
+                keyAlias != null && keyPassword != null && file(keystorePath).exists()) {
                 signingConfig = signingConfigs.getByName("release")
             }
         }
