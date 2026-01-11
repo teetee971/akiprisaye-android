@@ -68,14 +68,41 @@ cd akiprisaye-android
 ./gradlew assembleRelease
 ```
 
-## Configuration pour le Play Store
+## GitHub Actions
 
-### 1. Signature de l'application
+Le projet inclut des workflows GitHub Actions pour automatiser la construction :
 
-Créer un keystore pour signer l'application :
+### Build automatique
+
+Le workflow `.github/workflows/android-build.yml` se déclenche sur chaque push et génère automatiquement :
+- APK de debug et release
+- AAB (Android App Bundle) pour le Play Store
+
+### Release signée (optionnel)
+
+Pour activer la génération d'AAB signé automatiquement :
+
+1. Créer un keystore :
 ```bash
 keytool -genkey -v -keystore akiprisaye-release.keystore -alias akiprisaye -keyalg RSA -keysize 2048 -validity 10000
 ```
+
+2. Encoder le keystore en base64 :
+```bash
+cat akiprisaye-release.keystore | base64 -w 0
+```
+
+3. Ajouter les secrets GitHub suivants (Settings → Secrets → Actions) :
+   - `KEYSTORE_FILE` : Keystore encodé en base64
+   - `KEYSTORE_PASSWORD` : Mot de passe du keystore
+   - `KEY_ALIAS` : Alias de la clé (ex: "akiprisaye")
+   - `KEY_PASSWORD` : Mot de passe de la clé
+
+4. Décommenter la section `on:` dans `.github/workflows/android-release.yml`
+
+## Configuration pour le Play Store
+
+### 1. Signature de l'application (locale)
 
 Ajouter dans `app/build.gradle.kts` :
 ```kotlin
