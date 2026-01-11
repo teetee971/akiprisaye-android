@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!--
+        Backup rules for Android Auto Backup
+        https://developer.android.com/guide/topics/data/autobackup
+    -->
+    
+    <!-- Include all app data by default -->
+    <include domain="sharedpref" path="." />
+    <include domain="database" path="." />
+    <include domain="file" path="." />
+    
+    <!-- Exclude sensitive data from backups -->
+    <!-- Add exclusions here if needed in the future -->
+    <!-- Example: <exclude domain="sharedpref" path="sensitive_prefs.xml" /> -->
+</full-backup-content>
