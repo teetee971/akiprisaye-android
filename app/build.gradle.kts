@@ -41,8 +41,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            // Use signing config if available
-            signingConfig = signingConfigs.getByName("release")
+            // Use signing config only if keystore environment variables are available
+            val keystorePath = System.getenv("ANDROID_KEYSTORE_PATH")
+            if (keystorePath != null && file(keystorePath).exists()) {
+                signingConfig = signingConfigs.getByName("release")
+            }
         }
         debug {
             // Debug builds use default debug signing

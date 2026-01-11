@@ -31,7 +31,7 @@ jobs:
       run: |
         if [ -n "$ANDROID_KEYSTORE_BASE64" ]; then
           echo "Decoding keystore from Base64..."
-          echo $ANDROID_KEYSTORE_BASE64 | base64 --decode > $HOME/keystore.jks
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > $HOME/keystore.jks
           echo "Keystore decoded successfully"
         else
           echo "Warning: ANDROID_KEYSTORE_BASE64 secret not found. Skipping keystore setup."
@@ -43,7 +43,7 @@ jobs:
     - name: Build Debug APK
       run: ./gradlew assembleDebug
 
-    - name: Build Release APK
+    - name: Build Release APK and AAB
       env:
         ANDROID_KEYSTORE_PATH: ${{ github.workspace }}/keystore.jks
         ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
@@ -51,9 +51,9 @@ jobs:
         ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
       run: |
         if [ -f "$HOME/keystore.jks" ]; then
-          echo "Building signed release APK..."
+          echo "Building signed release APK and AAB..."
           export ANDROID_KEYSTORE_PATH=$HOME/keystore.jks
-          ./gradlew assembleRelease
+          ./gradlew assembleRelease bundleRelease
         else
           echo "Keystore not available. Skipping release build."
         fi
