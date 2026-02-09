@@ -41,7 +41,7 @@ akiprisaye-android/
 
 ## Prérequis
 
-- Android Studio Arctic Fox ou plus récent
+- Android Studio Hedgehog (2023.1.1) ou version stable plus récente
 - JDK 17 ou plus récent
 - Android SDK API 34 (Android 14)
 - Gradle 8.2
