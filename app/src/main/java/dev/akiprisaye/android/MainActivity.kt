@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
                     if (request?.isForMainFrame == true) {
                         Toast.makeText(
                             this@MainActivity,
-                            "Erreur de connexion. Vérifiez votre connexion Internet.",
+                            getString(R.string.connection_error_message),
                             Toast.LENGTH_LONG
                         ).show()
                     }
