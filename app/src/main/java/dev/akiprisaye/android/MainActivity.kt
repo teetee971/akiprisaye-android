@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
                 setGeolocationEnabled(false)
                 databaseEnabled = true
                 
-                // Désactiver les accès aux fichiers depuis les URLs
+                // Disable file access from URLs
                 allowFileAccessFromFileURLs = false
                 allowUniversalAccessFromFileURLs = false
             }
