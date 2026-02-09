@@ -93,10 +93,10 @@ cat akiprisaye-release.keystore | base64 -w 0
 ```
 
 3. Ajouter les secrets GitHub suivants (Settings → Secrets → Actions) :
-   - `KEYSTORE_FILE` : Keystore encodé en base64
-   - `KEYSTORE_PASSWORD` : Mot de passe du keystore
-   - `KEY_ALIAS` : Alias de la clé (ex: "akiprisaye")
-   - `KEY_PASSWORD` : Mot de passe de la clé
+   - `ANDROID_KEYSTORE_BASE64` : Keystore encodé en base64
+   - `ANDROID_KEYSTORE_PASSWORD` : Mot de passe du keystore
+   - `ANDROID_KEY_ALIAS` : Alias de la clé (ex: "akiprisaye")
+   - `ANDROID_KEY_PASSWORD` : Mot de passe de la clé
 
 4. Décommenter la section `on:` dans `.github/workflows/android-release.yml`
 
