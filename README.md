@@ -1,147 +1,149 @@
-# AkiPrisaye Android
+# Akiprisaye Android
 
-**✅ GOOGLE PLAY READY** - Fully configured and compliant with Google Play Store requirements.
+Application Android minimaliste en Kotlin pour charger le site web Akiprisaye dans une WebView.
 
-An Android application configured with secure signing, code optimization, and Google Play App Signing compatibility.
+## Description
 
-## 📊 Project Status
+Cette application Android charge simplement https://akiprisaye-web.pages.dev dans une WebView native. Elle ne collecte aucune donnée personnelle.
 
-- **Target SDK:** 34 (Android 14) ✅
-- **Min SDK:** 24 (Android 7.0)
-- **Version:** 1.0 (versionCode: 1)
-- **Build Type:** Release-ready with R8 optimization
-- **Compliance:** Google Play Store compliant (2024+)
+## Caractéristiques
 
-## 📚 Documentation
+- **WebView native** : Affichage du site web dans l'application
+- **Navigation interne** : Le bouton retour permet de naviguer dans l'historique du WebView
+- **JavaScript activé** : Support complet des fonctionnalités web modernes
+- **Aucune collecte de données** : Pas de tracking, pas d'analytics, respect de la vie privée
+- **Prêt pour le Play Store** : Structure standard Android avec tous les fichiers nécessaires
 
-- **[GOOGLE_PLAY_AUDIT_REPORT.md](./GOOGLE_PLAY_AUDIT_REPORT.md)** - Complete Play Store compliance audit
-- **[IMPLEMENTATION_SUMMARY.md](./IMPLEMENTATION_SUMMARY.md)** - Detailed implementation notes
-- **[PLAY_STORE_CHECKLIST.md](./PLAY_STORE_CHECKLIST.md)** - Quick submission checklist
+## Structure du projet
 
-## ✅ Play Store Compliance
-
-This project is configured to meet all Google Play Store requirements:
-
-- ✅ **Target SDK 34** - Required for new apps (August 2023+)
-- ✅ **Data Extraction Rules** - Android 12+ backup compliance
-- ✅ **Code Shrinking** - R8 optimization enabled
-- ✅ **ProGuard Rules** - Comprehensive obfuscation
-- ✅ **Secure Signing** - Environment-based keystore handling
-- ✅ **No Dangerous Permissions** - Privacy-first design
-- ✅ **AAB Support** - Ready for Google Play App Signing
-
-## 🔐 Signing Configuration
-
-This project is configured with proper Android signing for release builds. The signing configuration uses environment variables to securely handle keystore credentials.
-
-### Required Secrets
-
-The following GitHub secrets must be configured in your repository:
-
-1. **ANDROID_KEYSTORE_BASE64** - Your keystore file encoded in Base64
-2. **ANDROID_KEYSTORE_PASSWORD** - Password for the keystore
-3. **ANDROID_KEY_ALIAS** - Alias of the key in the keystore
-4. **ANDROID_KEY_PASSWORD** - Password for the key
-
-### How to Create and Configure Secrets
-
-#### 1. Generate a Keystore (if you don't have one)
-
-```bash
-keytool -genkey -v -keystore my-release-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias my-key-alias
+```
+akiprisaye-android/
+├── app/
+│   ├── build.gradle.kts           # Configuration de l'application
+│   ├── proguard-rules.pro         # Règles ProGuard
+│   └── src/
+│       └── main/
+│           ├── AndroidManifest.xml
+│           ├── java/dev/akiprisaye/android/
+│           │   └── MainActivity.kt
+│           └── res/
+│               ├── drawable/
+│               ├── mipmap-*/         # Icônes de l'application
+│               └── values/
+│                   ├── colors.xml
+│                   ├── strings.xml
+│                   └── themes.xml
+├── build.gradle.kts               # Configuration du projet
+├── settings.gradle.kts            # Configuration Gradle
+├── gradle.properties              # Propriétés Gradle
+└── gradlew                        # Wrapper Gradle
 ```
 
-#### 2. Convert Keystore to Base64
+## Prérequis
 
+- Android Studio Hedgehog (2023.1.1) ou version stable plus récente
+- JDK 17 ou plus récent
+- Android SDK API 34 (Android 14)
+- Gradle 8.2
+
+## Installation et build
+
+1. Cloner le repository :
 ```bash
-base64 -i my-release-key.jks -o keystore-base64.txt
-# On macOS, use: base64 -i my-release-key.jks -o keystore-base64.txt
-# On Linux, use: base64 my-release-key.jks > keystore-base64.txt
+git clone https://github.com/teetee971/akiprisaye-android.git
+cd akiprisaye-android
 ```
 
-#### 3. Add Secrets to GitHub
+2. Ouvrir le projet dans Android Studio
 
-1. Go to your repository on GitHub
-2. Navigate to Settings → Secrets and variables → Actions
-3. Click "New repository secret"
-4. Add each of the following secrets:
-   - Name: `ANDROID_KEYSTORE_BASE64`, Value: (contents of keystore-base64.txt)
-   - Name: `ANDROID_KEYSTORE_PASSWORD`, Value: (your keystore password)
-   - Name: `ANDROID_KEY_ALIAS`, Value: (your key alias)
-   - Name: `ANDROID_KEY_PASSWORD`, Value: (your key password)
+3. Laisser Gradle synchroniser les dépendances
 
-## ⚙️ GitHub Actions Workflow
-
-The GitHub Actions workflow (`.github/workflows/android-build.yml`) automatically:
-
-1. ✅ Decodes the Base64-encoded keystore
-2. ✅ Builds debug and release APKs
-3. ✅ Signs the release APK with your keystore
-4. ✅ Uploads build artifacts
-5. ✅ Supports Android App Bundle (AAB) for Google Play
-
-## 🏗️ Build Configuration
-
-The `app/build.gradle.kts` file contains signing configurations that:
-
-- Read keystore credentials from environment variables
-- Configure release builds to use the signing config
-- Support Google Play App Signing requirements
-
-## 🔒 Google Play App Signing
-
-This configuration is fully compatible with Google Play App Signing:
-
-- The release build is signed with your upload key
-- Google Play will re-sign with the app signing key
-- Both APK and AAB formats are supported
-
-## 🚀 Building Locally
-
-### Debug Build
-
+4. Builder le projet :
 ```bash
-./gradlew assembleDebug
+./gradlew build
 ```
 
-### Release Build (requires keystore environment variables)
-
+5. Pour générer un APK de release :
 ```bash
-export ANDROID_KEYSTORE_PATH=/path/to/your/keystore.jks
-export ANDROID_KEYSTORE_PASSWORD=your_keystore_password
-export ANDROID_KEY_ALIAS=your_key_alias
-export ANDROID_KEY_PASSWORD=your_key_password
-
 ./gradlew assembleRelease
-# or for AAB (Google Play)
-./gradlew bundleRelease
 ```
 
-## 📦 Build Outputs
+## GitHub Actions
 
-After a successful build, you'll find:
+Le projet inclut des workflows GitHub Actions pour automatiser la construction :
 
-- Debug APK: `app/build/outputs/apk/debug/app-debug.apk`
-- Release APK: `app/build/outputs/apk/release/app-release.apk`
-- Release AAB: `app/build/outputs/bundle/release/app-release.aab` (for Google Play)
+### Build automatique
 
-## 🎯 Google Play Submission
+Le workflow `.github/workflows/android-build.yml` se déclenche sur chaque push et génère automatiquement :
+- APK de debug et release
+- AAB (Android App Bundle) pour le Play Store
 
-Ready to submit to Google Play Store! See [PLAY_STORE_CHECKLIST.md](./PLAY_STORE_CHECKLIST.md) for the complete submission guide.
+### Release signée (optionnel)
 
-### Quick Steps:
-1. Build release AAB: `./gradlew bundleRelease`
-2. Upload to Play Console Internal Testing track
-3. Complete Data Safety form (No data collected)
-4. Add store listing materials (screenshots, description)
-5. Submit for review
+Pour activer la génération d'AAB signé automatiquement :
 
-## ✅ Status
+1. Créer un keystore :
+```bash
+keytool -genkey -v -keystore akiprisaye-release.keystore -alias akiprisaye -keyalg RSA -keysize 2048 -validity 10000
+```
 
-- 🔐 ANDROID_KEYSTORE_BASE64 → Configured via GitHub Secrets
-- 🔐 ANDROID_KEYSTORE_PASSWORD → Configured via GitHub Secrets
-- 🔐 ANDROID_KEY_ALIAS → Configured via GitHub Secrets
-- 🔐 ANDROID_KEY_PASSWORD → Configured via GitHub Secrets
-- 🏗️ build.gradle → Signing configs OK
-- ⚙️ GitHub Actions Workflow → Decoding + Signing OK
-- 🔒 Google Play App Signing → Compatible
+2. Encoder le keystore en base64 :
+```bash
+cat akiprisaye-release.keystore | base64 -w 0
+```
+
+3. Ajouter les secrets GitHub suivants (Settings → Secrets → Actions) :
+   - `ANDROID_KEYSTORE_BASE64` : Keystore encodé en base64
+   - `ANDROID_KEYSTORE_PASSWORD` : Mot de passe du keystore
+   - `ANDROID_KEY_ALIAS` : Alias de la clé (ex: "akiprisaye")
+   - `ANDROID_KEY_PASSWORD` : Mot de passe de la clé
+
+4. Décommenter la section `on:` dans `.github/workflows/android-release.yml`
+
+## Configuration pour le Play Store
+
+### 1. Signature de l'application (locale)
+
+Ajouter dans `app/build.gradle.kts` :
+```kotlin
+android {
+    signingConfigs {
+        create("release") {
+            storeFile = file("path/to/akiprisaye-release.keystore")
+            storePassword = "your-store-password"
+            keyAlias = "akiprisaye"
+            keyPassword = "your-key-password"
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig = signingConfigs.getByName("release")
+            // ...
+        }
+    }
+}
+```
+
+### 2. Informations Play Store nécessaires
+
+- **Application ID** : `dev.akiprisaye.android`
+- **Version** : 1.0 (versionCode: 1)
+- **Permissions** : INTERNET, ACCESS_NETWORK_STATE
+- **API minimale** : 24 (Android 7.0)
+- **API cible** : 34 (Android 14)
+
+## Sécurité et confidentialité
+
+- Aucune donnée utilisateur n'est collectée
+- Aucun tracker ou analytics
+- Communication uniquement avec https://akiprisaye-web.pages.dev
+- Pas d'accès à la caméra, microphone, ou autres capteurs
+- Code source ouvert et auditable
+
+## Licence
+
+Ce projet est open source. Voir le fichier LICENSE pour plus de détails.
+
+## Contact
+
+Pour toute question ou problème, ouvrir une issue sur GitHub.
